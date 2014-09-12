@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/login_background_iphone"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_dummy1"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight=".15"
+        android:orientation="horizontal"></LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight=".7"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_spacer1"
+            android:layout_width="fill_parent"
+            android:layout_height="10sp"
+            android:layout_weight=".15"
+            android:orientation="horizontal"></LinearLayout>
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:drawableBottom="#000000"
+            android:gravity="center"
+            android:hint="Username"
+            android:padding="10sp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout_spacer2"
+            android:layout_width="0dip"
+            android:layout_height="10sp"
+            android:layout_weight=".15"
+            android:orientation="horizontal"></LinearLayout>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="10sp" />
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="10sp"
+            android:layout_weight=".15"
+            android:orientation="horizontal"></LinearLayout>
+
+        <Button
+            android:id="@+id/sign_in"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#555555"
+            android:text="Sign In" />
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="10sp"
+            android:layout_weight=".15"
+            android:orientation="horizontal"></LinearLayout>
+
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Create Account" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_dummy2"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight=".15"
+        android:orientation="horizontal"></LinearLayout>
+
+</LinearLayout>
