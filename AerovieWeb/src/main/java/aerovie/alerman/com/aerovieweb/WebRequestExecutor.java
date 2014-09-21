@@ -12,7 +12,7 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
@@ -39,6 +39,7 @@ import javax.net.ssl.X509TrustManager;
 
 import aerovie.alerman.com.aerovieweb.jsonRequestTypes.CreateAccountParameters;
 import aerovie.alerman.com.aerovieweb.jsonRequestTypes.LoginParameters;
+import aerovie.alerman.com.aerovieweb.jsonResponseTypes.AccountResponse;
 
 /**
  * Created by alerman on 9/12/14.
@@ -91,9 +92,11 @@ public class WebRequestExecutor {
         cap.setPassword(password);
         cap.setUser(username);
 
-        String requestData = new Gson().toJson(cap);
+        String requestData = gson.toJson(cap);
         String response = getResponse(gson.toJson(cap));
-        return response;
+        AccountResponse accountResponse = gson.fromJson(response, AccountResponse.class);
+        //TODO handle error or null session id
+        return accountResponse.getSessionId();
     }
 
     public String login(String username, String password) throws IOException, ExecutionException, InterruptedException {
@@ -101,7 +104,9 @@ public class WebRequestExecutor {
         lp.setPassword(password);
         lp.setUsername(username);
         String response = getResponse(gson.toJson(lp));
-        return response;
+        AccountResponse accountResponse = gson.fromJson(response, AccountResponse.class);
+        //TODO handle error or null session id
+        return accountResponse.getSessionId();
 
 
     }
@@ -115,7 +120,8 @@ public class WebRequestExecutor {
                     HttpClient httpclient = WebRequestExecutor.getNewHttpClient();
 
                     HttpPost post = new HttpPost(url);
-                    post.setEntity(new StringEntity("my_request=" + params[0]));
+                    String body = "my_request=" + params[0];
+                    post.setEntity(new ByteArrayEntity(body.getBytes()));
                     post.setHeader("Content-type", "application/json");
 
                     return new String(EntityUtils.toByteArray(httpclient.execute(post).getEntity()));
@@ -127,6 +133,22 @@ public class WebRequestExecutor {
 
         asyncTask.execute(params);
         return asyncTask.get();
+
+//        if(params.contains("create_account") || params.contains("check_auth"))
+//        {
+//
+//            return "{" +
+//                    "    \"auth\": \"1\"," +
+//                    "    \"error\": \"SUCCESS\"," +
+//                    "    \"errorno\": \"1\"," +
+//                    "    \"session_id\": \"e29e945237252b393d557e0e9be4bf680d629c63\"," +
+//                    "    \"auth_account_id\": \"0\"," +
+//                    "    \"name\": \"aa aas\"," +
+//                    "    \"facebook_ident\": \"\"," +
+//                    "    \"twitter_ident\": \"\"," +
+//                    "    \"pilot\": \"no\"" +
+//                    "  }";
+//        }return"";
 
 
     }
