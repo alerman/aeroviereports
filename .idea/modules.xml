@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AerovieData/AerovieData.iml" filepath="$PROJECT_DIR$/AerovieData/AerovieData.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AerovieReports.iml" filepath="$PROJECT_DIR$/AerovieReports.iml" />
       <module fileurl="file://$PROJECT_DIR$/AerovieWeb/AerovieWeb.iml" filepath="$PROJECT_DIR$/AerovieWeb/AerovieWeb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aeroviereports.iml" filepath="$PROJECT_DIR$/aeroviereports.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

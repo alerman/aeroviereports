@@ -2,6 +2,9 @@ package aerovie.alerman.com.aeroviereports;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +17,7 @@ import android.widget.EditText;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import aerovie.alerman.com.aerovieweb.WebRequestExecutor;
+import aerovie.alerman.com.aeroviewebtests.WebRequestExecutor;
 
 
 public class LoginActivity extends Activity {
@@ -108,7 +111,15 @@ public class LoginActivity extends Activity {
                 WebRequestExecutor wre = WebRequestExecutor.getInstance(url);
                 try {
                     String result = wre.login(username.getText().toString(), password.getText().toString());
-                    Log.e("LOGIN", result);
+                    SharedPreferences prefs = LoginActivity.this.getSharedPreferences(
+                            "aerovie.alerman.com.aerovie", Context.MODE_PRIVATE);
+
+                    prefs.edit().putString("sessionId",result);
+                    prefs.edit().apply();
+                    Log.i("LOGIN", result);
+                    //TODO take care of error conditions and failure
+                    Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(mainActivity);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {

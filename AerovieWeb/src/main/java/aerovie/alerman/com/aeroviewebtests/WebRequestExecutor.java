@@ -1,4 +1,4 @@
-package aerovie.alerman.com.aerovieweb;
+package aerovie.alerman.com.aeroviewebtests;
 
 import android.os.AsyncTask;
 
@@ -37,9 +37,9 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import aerovie.alerman.com.aerovieweb.jsonRequestTypes.CreateAccountParameters;
-import aerovie.alerman.com.aerovieweb.jsonRequestTypes.LoginParameters;
-import aerovie.alerman.com.aerovieweb.jsonResponseTypes.AccountResponse;
+import aerovie.alerman.com.aeroviewebtests.jsonRequestTypes.CreateAccountParameters;
+import aerovie.alerman.com.aeroviewebtests.jsonRequestTypes.LoginParameters;
+import aerovie.alerman.com.aeroviewebtests.jsonResponseTypes.AccountResponse;
 
 /**
  * Created by alerman on 9/12/14.
@@ -104,8 +104,12 @@ public class WebRequestExecutor {
         lp.setPassword(password);
         lp.setUsername(username);
         String response = getResponse(gson.toJson(lp));
-        AccountResponse accountResponse = gson.fromJson(response, AccountResponse.class);
+        AccountResponse accountResponse = gson.fromJson(response,AccountResponse.class);
+       // AccountResponse accountResponse = gson.fromJson("{\"auth\":\"1\",\"error\":\"SUCCESS\",\"errorno\":\"1\",\"session_id\":\"44204f469859722bbfab25990108d3af0359c4c3\",\"auth_account_id\":\"0\",\"name\":\"Adam Lerman\",\"facebook_ident\":\"\",\"twitter_ident\":\"\",\"pilot\":\"yes\"}", AccountResponse.class);
         //TODO handle error or null session id
+
+
+
         return accountResponse.getSessionId();
 
 
@@ -122,7 +126,8 @@ public class WebRequestExecutor {
                     HttpPost post = new HttpPost(url);
                     String body = "my_request=" + params[0];
                     post.setEntity(new ByteArrayEntity(body.getBytes()));
-                    post.setHeader("Content-type", "application/json");
+                   // post.setHeader("Content-length",String.valueOf(body.getBytes().length));
+                    post.setHeader("Content-type", "application/x-www-form-urlencoded");
 
                     return new String(EntityUtils.toByteArray(httpclient.execute(post).getEntity()));
                 } catch (IOException e) {

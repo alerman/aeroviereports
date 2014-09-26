@@ -1,4 +1,4 @@
-package aerovie.alerman.com.aerovieweb.jsonRequestTypes;
+package aerovie.alerman.com.aeroviewebtests.jsonRequestTypes;
 
 import com.google.gson.annotations.SerializedName;
 
