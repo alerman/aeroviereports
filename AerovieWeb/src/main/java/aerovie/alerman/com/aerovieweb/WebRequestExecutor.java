@@ -1,4 +1,4 @@
-package aerovie.alerman.com.aeroviewebtests;
+package aerovie.alerman.com.aerovieweb;
 
 import android.os.AsyncTask;
 
@@ -37,9 +37,10 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import aerovie.alerman.com.aeroviewebtests.jsonRequestTypes.CreateAccountParameters;
-import aerovie.alerman.com.aeroviewebtests.jsonRequestTypes.LoginParameters;
-import aerovie.alerman.com.aeroviewebtests.jsonResponseTypes.AccountResponse;
+import aerovie.alerman.com.aerovieweb.jsonRequestTypes.CreateAccountParameters;
+import aerovie.alerman.com.aerovieweb.jsonRequestTypes.LoginParameters;
+import aerovie.alerman.com.aerovieweb.jsonRequestTypes.SyncRequest;
+import aerovie.alerman.com.aerovieweb.jsonResponseTypes.AccountResponse;
 
 /**
  * Created by alerman on 9/12/14.
@@ -107,12 +108,17 @@ public class WebRequestExecutor {
         AccountResponse accountResponse = gson.fromJson(response,AccountResponse.class);
        // AccountResponse accountResponse = gson.fromJson("{\"auth\":\"1\",\"error\":\"SUCCESS\",\"errorno\":\"1\",\"session_id\":\"44204f469859722bbfab25990108d3af0359c4c3\",\"auth_account_id\":\"0\",\"name\":\"Adam Lerman\",\"facebook_ident\":\"\",\"twitter_ident\":\"\",\"pilot\":\"yes\"}", AccountResponse.class);
         //TODO handle error or null session id
-
-
-
         return accountResponse.getSessionId();
 
 
+    }
+
+    public String sync(String sessionId, String deviceSyncId) throws InterruptedException, ExecutionException, IOException {
+        SyncRequest req = new SyncRequest();
+        req.setDeviceSyncId(deviceSyncId);
+        req.setSessionId(sessionId);
+
+        return getResponse(gson.toJson(req));
     }
 
     private String getResponse(String params) throws IOException, ExecutionException, InterruptedException {

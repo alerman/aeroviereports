@@ -17,7 +17,7 @@ import android.widget.EditText;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import aerovie.alerman.com.aeroviewebtests.WebRequestExecutor;
+import aerovie.alerman.com.aerovieweb.WebRequestExecutor;
 
 
 public class LoginActivity extends Activity {
@@ -118,6 +118,7 @@ public class LoginActivity extends Activity {
                     prefs.edit().apply();
                     Log.i("LOGIN", result);
                     //TODO take care of error conditions and failure
+                    String result2 = wre.sync(result,"");
                     Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(mainActivity);
                 } catch (IOException e) {

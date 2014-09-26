@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="aerovie.alerman.com.aeroviewebtests">
+    package="aerovie.alerman.com.aerovieweb">
 
     <application
         android:allowBackup="true"

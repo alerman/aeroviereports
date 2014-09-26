@@ -1,4 +1,4 @@
-package aerovie.alerman.com.aeroviewebtests;
+package aerovie.alerman.com.aerovieweb;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
