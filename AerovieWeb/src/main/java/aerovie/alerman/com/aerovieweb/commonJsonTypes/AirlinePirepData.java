@@ -1,4 +1,4 @@
-package aerovie.alerman.com.aerovieweb.jsonRequestTypes;
+package aerovie.alerman.com.aerovieweb.commonJsonTypes;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -10,7 +10,7 @@ import aerovie.alerman.com.aeroviedata.types.Pirep;
 /**
  * Created by alerman on 9/26/14.
  */
-public class LocalData {
+public class AirlinePirepData {
     @SerializedName("airline")
     private List<Airline> airlines;
 

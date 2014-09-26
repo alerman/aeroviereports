@@ -1,8 +1,16 @@
 package aerovie.alerman.com.aeroviedata.types;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
 
+import org.json.JSONArray;
+
+import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
@@ -106,4 +114,5 @@ public class Airline extends SugarRecord<Airline> {
     public void setSyncRemote(String syncRemote) {
         this.syncRemote = syncRemote;
     }
+
 }

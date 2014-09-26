@@ -3,6 +3,7 @@ package aerovie.alerman.com.aerovieweb;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
@@ -37,10 +38,15 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import aerovie.alerman.com.aeroviedata.types.Airline;
+import aerovie.alerman.com.aeroviedata.types.Pirep;
+import aerovie.alerman.com.aerovieweb.commonJsonTypes.CustomAirlineDeserializer;
+import aerovie.alerman.com.aerovieweb.commonJsonTypes.CustomPirepDeserializer;
 import aerovie.alerman.com.aerovieweb.jsonRequestTypes.CreateAccountParameters;
 import aerovie.alerman.com.aerovieweb.jsonRequestTypes.LoginParameters;
 import aerovie.alerman.com.aerovieweb.jsonRequestTypes.SyncRequest;
 import aerovie.alerman.com.aerovieweb.jsonResponseTypes.AccountResponse;
+import aerovie.alerman.com.aerovieweb.jsonResponseTypes.SyncResponse;
 
 /**
  * Created by alerman on 9/12/14.
@@ -52,7 +58,7 @@ public class WebRequestExecutor {
 
     private WebRequestExecutor(String url) {
         this.url = url;
-        this.gson = new Gson();
+        this.gson = new GsonBuilder().registerTypeAdapter(Pirep.class,new CustomPirepDeserializer()).registerTypeAdapter(Airline.class, new CustomAirlineDeserializer()).create();
     }
 
     public static WebRequestExecutor getInstance(String url) {
@@ -118,7 +124,12 @@ public class WebRequestExecutor {
         req.setDeviceSyncId(deviceSyncId);
         req.setSessionId(sessionId);
 
-        return getResponse(gson.toJson(req));
+        SyncResponse response = gson.fromJson(getResponse(gson.toJson(req)), SyncResponse.class);
+
+        Airline.saveInTx(response.getSyncRemoteData().getAirlines());
+        Pirep.saveInTx(response.getSyncRemoteData().getPireps());
+
+        return "SUCCESS";
     }
 
     private String getResponse(String params) throws IOException, ExecutionException, InterruptedException {

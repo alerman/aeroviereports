@@ -118,7 +118,7 @@ public class LoginActivity extends Activity {
                     prefs.edit().apply();
                     Log.i("LOGIN", result);
                     //TODO take care of error conditions and failure
-                    String result2 = wre.sync(result,"");
+                    String result2 = wre.sync(result,"e36b8aab6494e0a98ce03b324e0925f5457b472b");
                     Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(mainActivity);
                 } catch (IOException e) {
