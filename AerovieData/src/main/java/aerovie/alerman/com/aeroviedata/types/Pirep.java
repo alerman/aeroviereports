@@ -110,7 +110,7 @@ public class Pirep extends Model {
     private String facebook;
     @Column(name="deleted")
     private String deleted;
-    @Column(name="remote_pirep_id", unique = true, onUniqueConflict = Column.ConflictAction.FAIL)
+    @Column(name="remote_pirep_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     @SerializedName("remote_pirep_id")
     private String remotePirepId;
     @Column(name="sync_remote")
@@ -466,5 +466,25 @@ public class Pirep extends Model {
 
     public void setLlws(String llws) {
         this.llws = llws;
+    }
+
+    public  String getRideString(){
+        if(ride.equalsIgnoreCase("smooth")) {
+            return "smooth";
+        }else if(ride.equalsIgnoreCase("light")) {
+            return "light turbulence";
+        }else if(ride.equalsIgnoreCase("light-moderate")) {
+            return "light to moderate turbulence";
+        }else if(ride.equalsIgnoreCase("moderate")) {
+            return "moderate turbulence";
+        }else if(ride.equalsIgnoreCase("moderate-severe")) {
+           return "moderate to severe turbulence";
+        }else if(ride.equalsIgnoreCase("severe")) {
+           return "SEVERE turbulence";
+        }else if(ride.equalsIgnoreCase("extreme")) {
+            return "EXTREME turbulence";
+        }else return "smooth";
+        //TODO WHAT SHOUD DEFAULT RETURN BE?
+
     }
 }

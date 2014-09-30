@@ -112,6 +112,7 @@ public class LoginActivity extends Activity {
 
                                 //if now, alert that passwords dont match
                                 //TODO how to alert on not matching passwords
+                                Log.e("LOGIN","PASSWORDS DO NOT MATCH");
                             }
                         }
 
@@ -149,35 +150,39 @@ public class LoginActivity extends Activity {
     }
 
     private void loginSuccess() {
-        //Intent i = new Intent(getApplicationContext(), DBSyncReceiver.class);
+        Intent i = new Intent(getApplicationContext(), DBSyncReceiver.class);
 
-        //dbSyncIntent = PendingIntent.getBroadcast(getApplicationContext(), Integer.valueOf((int) Math.floor(Math.random() * 100)), i, 0);
+        dbSyncIntent = PendingIntent.getBroadcast(getApplicationContext(), Integer.valueOf((int) Math.floor(Math.random() * 100)), i, 0);
 
         // We want the alarm to go off 3 seconds from now.
-        //long firstTime = SystemClock.elapsedRealtime();
-        //firstTime += 3 * 1000;//start 3 seconds after first register.
+        long firstTime = SystemClock.elapsedRealtime();
+        firstTime += 3 * 1000;//start 3 seconds after first register.
 
-        // Schedule the alarm!
-        //AlarmManager am = (AlarmManager) getApplicationContext()
-        //        .getSystemService(ALARM_SERVICE);
-        //am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
-        //        60*1000*1, dbSyncIntent);//1min interval
+//        Schedule the alarm!
+        AlarmManager am = (AlarmManager) getApplicationContext()
+                .getSystemService(ALARM_SERVICE);
+        am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+                60*1000*1, dbSyncIntent);//1min interval
 
-        String sessionId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.sessionId), null);
-        String deviceSyncId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.deviceId), null);
-        try {
-            deviceSyncId = WebRequestExecutor.getInstance(getApplicationContext().getString(R.string.aerovie_url)).sync(sessionId, deviceSyncId);
-            if (deviceSyncId == null) {
-                SharedPreferencesManager.store(getApplicationContext(), getString(R.string.sessionId), null);
-            }
-            SharedPreferencesManager.store(getApplicationContext(), getString(R.string.deviceId), deviceSyncId);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String sessionId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.sessionId), null);
+//        String sessionId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.sessionId), null);
+//        String deviceSyncId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.deviceId), null);
+//        try {
+//            deviceSyncId = WebRequestExecutor.getInstance(getApplicationContext().getString(R.string.aerovie_url)).sync(sessionId, deviceSyncId);
+//
+//            SharedPreferencesManager.store(getApplicationContext(), getString(R.string.deviceId), deviceSyncId);
+//            if (deviceSyncId == null) {
+//                SharedPreferencesManager.store(getApplicationContext(), getString(R.string.sessionId), null);
+//                //TODO show an error message to the screen
+//                return;
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         Intent mainActivity = new Intent(this, MainActivity.class);
         startActivity(mainActivity);

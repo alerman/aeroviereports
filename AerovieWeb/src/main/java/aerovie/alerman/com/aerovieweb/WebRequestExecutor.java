@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -153,6 +154,10 @@ public class WebRequestExecutor {
         {
             pirep.save();
         }
+
+        new Delete().from(Airline.class).where("deleted = ", "yes").execute();
+        new Delete().from(Pirep.class).where("deleted = ", "yes").execute();
+        new Delete().from(cifpAirport.class).where("deleted = ", "yes").execute();
         ActiveAndroid.setTransactionSuccessful();
         }catch(NullPointerException e)
         {

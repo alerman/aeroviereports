@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.activeandroid.query.Select;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,25 +20,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 import aerovie.alerman.com.aeroviedata.types.Pirep;
+import aerovie.alerman.com.aeroviereports.adapters.PirepListAdapter;
 
 public class MainActivity extends FragmentActivity {
 
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private ImageView mImageView;
-    private ImageView mImageView2;
+    private ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<Pirep> pireps = new Select().all().from(Pirep.class).<Pirep>execute();
-        mImageView = (ImageView) findViewById(R.id.imageView);
-        mImageView.setImageResource(R.drawable.topbar);
-        mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        mImageView2 = (ImageView) findViewById(R.id.imageView2);
-        mImageView2.setImageResource(R.drawable.sidebar);
-        mImageView2.setScaleType(ImageView.ScaleType.FIT_XY);
+        ListView lv = (ListView) findViewById(R.id.pirepListView);
+        lv.setAdapter(new PirepListAdapter(this, R.layout.pireplistview, new Select().all().from(Pirep.class).orderBy("pirep_time desc").<Pirep>execute()));
         setUpMapIfNeeded();
     }
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="60sp"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+
+    android:padding="6dip">
+
+    <ImageView
+        android:id="@+id/pirepIcon"
+
+        android:layout_width="30sp"
+        android:layout_height="fill_parent"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="6dip"
+
+        android:src="@drawable/btn_clear" />
+
+    <TextView
+        android:id="@+id/pirepTime"
+
+        android:layout_width="30sp"
+        android:layout_height="26dip"
+
+        android:layout_toRightOf="@id/pirepIcon"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textSize="9dip"
+        android:textColor="#ff888888"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:text="Simple application that shows how to use RelativeLayout" />
+
+    <TextView
+        android:layout_width="30sp"
+        android:layout_height="fill_parent"
+        android:id="@+id/pirepInfo"
+        android:textSize="14dip"
+        android:layout_toRightOf="@id/pirepIcon"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/pirepTime"
+        android:layout_alignWithParentIfMissing="true"
+
+        android:gravity="center_vertical"
+        android:text="My Application" />
+
+</RelativeLayout>

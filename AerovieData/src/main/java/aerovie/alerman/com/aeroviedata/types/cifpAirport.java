@@ -22,7 +22,7 @@ public class cifpAirport extends Model {
     //          `deleted` varchar(255) not null default 'no',
     //          `sync_remote` varchar(255) not null default 'no')"];
 
-    @Column(name = "remote_cifp_airport_id", unique = true, onUniqueConflict = Column.ConflictAction.FAIL)
+    @Column(name = "remote_cifp_airport_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String cifpAirportId;
     @Column(name="timestamp")
     private Date timestamp;

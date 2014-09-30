@@ -25,7 +25,7 @@ public class Airline extends Model {
     //  `sync_remote` varchar(255) not null default 'no')"];
 
     @SerializedName("airline_id")
-    @Column(name="remote_airline_id", unique = true, onUniqueConflict = Column.ConflictAction.FAIL)
+    @Column(name="remote_airline_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String airlineId;
     @Column(name="timestamp")
     private Date timestamp;
