@@ -30,8 +30,7 @@
         android:textSize="9dip"
         android:textColor="#ff888888"
         android:singleLine="true"
-        android:ellipsize="marquee"
-        android:text="Simple application that shows how to use RelativeLayout" />
+        android:ellipsize="marquee" />
 
     <TextView
         android:layout_width="30sp"
@@ -44,7 +43,6 @@
         android:layout_above="@id/pirepTime"
         android:layout_alignWithParentIfMissing="true"
 
-        android:gravity="center_vertical"
-        android:text="My Application" />
+        android:gravity="center_vertical" />
 
 </RelativeLayout>
