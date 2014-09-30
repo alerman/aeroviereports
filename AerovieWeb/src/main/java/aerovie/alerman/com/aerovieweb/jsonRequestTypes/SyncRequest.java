@@ -1,10 +1,12 @@
 package aerovie.alerman.com.aerovieweb.jsonRequestTypes;
 
+import com.activeandroid.query.Select;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
 
 import aerovie.alerman.com.aeroviedata.types.Airline;
 import aerovie.alerman.com.aeroviedata.types.Pirep;
+import aerovie.alerman.com.aeroviedata.types.cifpAirport;
 import aerovie.alerman.com.aerovieweb.commonJsonTypes.AirlinePirepData;
 
 /**
@@ -26,8 +28,9 @@ public class SyncRequest extends AerovieParameters{
         request = "db_sync_remote";
         connectionDescription = "db_sync_remote";
         localData = new AirlinePirepData();
-        localData.setAirlines(Lists.newArrayList(Airline.findAll(Airline.class)));
-        localData.setPireps(Lists.newArrayList(Pirep.findAll(Pirep.class)));
+        localData.setAirlines(new Select().all().from(Airline.class).where("sync_remote = ?", true).<Airline>execute());
+        localData.setPireps(new Select().all().from(Pirep.class).where("sync_remote = ?", true).<Pirep>execute());
+        localData.setAirports(new Select().all().from(cifpAirport.class).where("sync_remote = ?", true).<cifpAirport>execute());
     }
 
     public String getSessionId() {

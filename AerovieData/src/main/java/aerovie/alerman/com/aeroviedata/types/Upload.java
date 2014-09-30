@@ -1,14 +1,20 @@
 package aerovie.alerman.com.aeroviedata.types;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.SerializedName;
-import com.orm.SugarRecord;
+
 
 import java.util.Date;
 
 /**
  * Created by alerman on 9/16/14.
  */
-public class Upload extends SugarRecord<Upload> {
+
+@Table(name = "upload")
+public class Upload extends Model
+{
     //"CREATE TABLE IF NOT EXISTS upload (
     // `upload_id` integer primary key autoincrement,
     // `timestamp` timestamp not null default current_timestamp,
@@ -16,13 +22,15 @@ public class Upload extends SugarRecord<Upload> {
     // `my_id` int not null default '0',
     // `status` varchar not null default '')"];
 
-    @SerializedName("upload_id")
-    private String uploadId;
-    private Date timestamp;
-    private String what;
     @SerializedName("my_id")
-    private String myId;
+    @Column(name="upload_id", unique = true, onUniqueConflict = Column.ConflictAction.FAIL)
+    private String uploadId;
+    @Column(name="timestmp")
+    private Date timestamp;
+    @Column(name="status")
     private String status;
+    @Column(name="what")
+    private String what;
 
     public String getUploadId() {
         return uploadId;
@@ -46,14 +54,6 @@ public class Upload extends SugarRecord<Upload> {
 
     public void setWhat(String what) {
         this.what = what;
-    }
-
-    public String getMyId() {
-        return myId;
-    }
-
-    public void setMyId(String myId) {
-        this.myId = myId;
     }
 
     public String getStatus() {

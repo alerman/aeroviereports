@@ -1,11 +1,15 @@
 package aerovie.alerman.com.aeroviereports;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,124 +18,169 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.activeandroid.ActiveAndroid;
+
+import org.apache.http.impl.conn.tsccm.PoolEntryRequest;
+
 import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import aerovie.alerman.com.aeroviereports.background.DBSyncReceiver;
 import aerovie.alerman.com.aerovieweb.WebRequestExecutor;
+import common.SharedPreferencesManager;
 
 
 public class LoginActivity extends Activity {
 
-    //TODO this should be put into config somewhere
-    String url = "https://aerovie.com/api/applite-android.html";
+    public static PendingIntent dbSyncIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_login);
+        String sessionId = SharedPreferencesManager.retrieve(getApplicationContext(),getString(R.string.sessionId),null);
 
-        Button signInButton = (Button) this.findViewById(R.id.sign_in);
+        if(sessionId!=null)
+        {
+            loginSuccess();
+        }else {
 
+            setContentView(R.layout.activity_login);
 
-        Button createAccountButton = (Button) this.findViewById(R.id.create_account);
-
-        createAccountButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                LayoutInflater inflater = LoginActivity.this.getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.dialog_create_account, null);
-                builder.setView(dialogView);
-                final AlertDialog dialog = builder.create();
-                builder.show();
-                Button cancelButton = (Button) dialogView.findViewById(R.id.create_account_cancel);
-                Button createButton = (Button) dialogView.findViewById(R.id.create_account_submit);
-
-                final EditText usernameEditText = (EditText) dialogView.findViewById(R.id.createUsername);
-                final EditText passwordEditText = (EditText) dialogView.findViewById(R.id.createPassword);
-                final EditText confirmPasswordEditText = (EditText) dialogView.findViewById(R.id.createConfirmPassword);
-                final EditText firstNameEditText = (EditText) dialogView.findViewById(R.id.createFirstName);
-                final EditText lastNameEditText = (EditText) dialogView.findViewById(R.id.createLastName);
+            Button signInButton = (Button) this.findViewById(R.id.sign_in);
 
 
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.hide();
-                    }
-                });
+            Button createAccountButton = (Button) this.findViewById(R.id.create_account);
 
-                createButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Check passwords match
-                        String password = passwordEditText.getText().toString();
-                        String confirmPassword = confirmPasswordEditText.getText().toString();
+            createAccountButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    LayoutInflater inflater = LoginActivity.this.getLayoutInflater();
+                    View dialogView = inflater.inflate(R.layout.dialog_create_account, null);
+                    builder.setView(dialogView);
+                    final AlertDialog dialog = builder.create();
+                    builder.show();
+                    Button cancelButton = (Button) dialogView.findViewById(R.id.create_account_cancel);
+                    Button createButton = (Button) dialogView.findViewById(R.id.create_account_submit);
 
-                        if (password.equals(confirmPassword)) {
-                            try {
-                                //if yes, submit
-                                WebRequestExecutor wre = WebRequestExecutor.getInstance(url);
+                    final EditText usernameEditText = (EditText) dialogView.findViewById(R.id.createUsername);
+                    final EditText passwordEditText = (EditText) dialogView.findViewById(R.id.createPassword);
+                    final EditText confirmPasswordEditText = (EditText) dialogView.findViewById(R.id.createConfirmPassword);
+                    final EditText firstNameEditText = (EditText) dialogView.findViewById(R.id.createFirstName);
+                    final EditText lastNameEditText = (EditText) dialogView.findViewById(R.id.createLastName);
 
-                                String response = wre.createAccount(getStringValue(usernameEditText), password,
-                                        getStringValue(firstNameEditText), getStringValue(lastNameEditText));
-                                Log.e("createAccount", response);
-                            } catch (IOException e) {
-                                //TODO remove printStackTrace
-                                e.printStackTrace();
-                            } catch (ExecutionException e) {
-                                //TODO remove printStackTrace
-                                e.printStackTrace();
-                            } catch (InterruptedException e) {
-                                //TODO remove printStackTrace
-                                e.printStackTrace();
-                            }
-                            //On success, hide dialog and log in
-                            //On fail show error message
-                        } else {
 
-                            //if now, alert that passwords dont match
-                            //TODO how to alert on not matching passwords
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.hide();
                         }
-                    }
+                    });
 
-                    private String getStringValue(EditText editText) {
-                        return editText.getText().toString();
-                    }
-                });
-            }
-        });
+                    createButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Check passwords match
+                            String password = passwordEditText.getText().toString();
+                            String confirmPassword = confirmPasswordEditText.getText().toString();
 
-        final EditText username = (EditText) this.findViewById(R.id.username);
-        final EditText password = (EditText) this.findViewById(R.id.password);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WebRequestExecutor wre = WebRequestExecutor.getInstance(url);
-                try {
-                    String result = wre.login(username.getText().toString(), password.getText().toString());
-                    SharedPreferences prefs = LoginActivity.this.getSharedPreferences(
-                            "aerovie.alerman.com.aerovie", Context.MODE_PRIVATE);
+                            if (password.equals(confirmPassword)) {
+                                try {
+                                    //if yes, submit
+                                    WebRequestExecutor wre = WebRequestExecutor.getInstance(getString(R.string.aerovie_url));
 
-                    prefs.edit().putString("sessionId",result);
-                    prefs.edit().apply();
-                    Log.i("LOGIN", result);
-                    //TODO take care of error conditions and failure
-                    String result2 = wre.sync(result,"e36b8aab6494e0a98ce03b324e0925f5457b472b");
-                    Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(mainActivity);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
+                                    String response = wre.createAccount(getStringValue(usernameEditText), password,
+                                            getStringValue(firstNameEditText), getStringValue(lastNameEditText));
+                                    Log.e("createAccount", response);
+                                    SharedPreferencesManager.store(getApplicationContext(), getString(R.string.sessionId), response);
+                                    loginSuccess();
+                                } catch (IOException e) {
+                                    //TODO remove printStackTrace
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    //TODO remove printStackTrace
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    //TODO remove printStackTrace
+                                    e.printStackTrace();
+                                }
+                                //On success, hide dialog and log in
+                                //On fail show error message
+                            } else {
+
+                                //if now, alert that passwords dont match
+                                //TODO how to alert on not matching passwords
+                            }
+                        }
+
+                        private String getStringValue(EditText editText) {
+                            return editText.getText().toString();
+                        }
+                    });
                 }
+            });
 
+            final EditText username = (EditText) this.findViewById(R.id.username);
+            final EditText password = (EditText) this.findViewById(R.id.password);
+            signInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WebRequestExecutor wre = WebRequestExecutor.getInstance(getString(R.string.aerovie_url));
+                    try {
+                        String result = wre.login(username.getText().toString(), password.getText().toString());
+                        SharedPreferencesManager.store(getApplicationContext(), getString(R.string.sessionId), result);
+                        Log.i("LOGIN", result);
+                        //TODO take care of error conditions and failure
+
+                        loginSuccess();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        }
+    }
+
+    private void loginSuccess() {
+        //Intent i = new Intent(getApplicationContext(), DBSyncReceiver.class);
+
+        //dbSyncIntent = PendingIntent.getBroadcast(getApplicationContext(), Integer.valueOf((int) Math.floor(Math.random() * 100)), i, 0);
+
+        // We want the alarm to go off 3 seconds from now.
+        //long firstTime = SystemClock.elapsedRealtime();
+        //firstTime += 3 * 1000;//start 3 seconds after first register.
+
+        // Schedule the alarm!
+        //AlarmManager am = (AlarmManager) getApplicationContext()
+        //        .getSystemService(ALARM_SERVICE);
+        //am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+        //        60*1000*1, dbSyncIntent);//1min interval
+
+        String sessionId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.sessionId), null);
+        String deviceSyncId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.deviceId), null);
+        try {
+            deviceSyncId = WebRequestExecutor.getInstance(getApplicationContext().getString(R.string.aerovie_url)).sync(sessionId, deviceSyncId);
+            if (deviceSyncId == null) {
+                SharedPreferencesManager.store(getApplicationContext(), getString(R.string.sessionId), null);
             }
-        });
+            SharedPreferencesManager.store(getApplicationContext(), getString(R.string.deviceId), deviceSyncId);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        startActivity(mainActivity);
     }
 
 

@@ -1,22 +1,17 @@
 package aerovie.alerman.com.aeroviedata.types;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.SerializedName;
-import com.orm.SugarRecord;
 
-import org.json.JSONArray;
-
-import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
  * Created by alerman on 9/16/14.
  */
-public class Airline extends SugarRecord<Airline> {
+@Table(name = "airline")
+public class Airline extends Model {
 
     //"CREATE TABLE IF NOT EXISTS airline
     //  (`airline_id` integer primary key autoincrement,
@@ -30,17 +25,23 @@ public class Airline extends SugarRecord<Airline> {
     //  `sync_remote` varchar(255) not null default 'no')"];
 
     @SerializedName("airline_id")
+    @Column(name="remote_airline_id", unique = true, onUniqueConflict = Column.ConflictAction.FAIL)
     private String airlineId;
+    @Column(name="timestamp")
     private Date timestamp;
+    @Column(name="ident")
     private String ident;
+    @Column(name="name")
     private String name;
+    @Column(name="city")
     private String city;
+    @Column(name="callsign")
     private String callsign;
-    @SerializedName("remoate_airline_id")
-    private String remoteAirlineId;
+    @Column(name="deleted")
     private String deleted;
     @SerializedName("sync_remote")
-    private String syncRemote;
+    @Column(name="sync_remote")
+    private boolean syncRemote;
 
 
     public String getAirlineId() {
@@ -91,13 +92,7 @@ public class Airline extends SugarRecord<Airline> {
         this.callsign = callsign;
     }
 
-    public String getRemoteAirlineId() {
-        return remoteAirlineId;
-    }
 
-    public void setRemoteAirlineId(String remoteAirlineId) {
-        this.remoteAirlineId = remoteAirlineId;
-    }
 
     public String getDeleted() {
         return deleted;
@@ -107,11 +102,11 @@ public class Airline extends SugarRecord<Airline> {
         this.deleted = deleted;
     }
 
-    public String getSyncRemote() {
+    public boolean getSyncRemote() {
         return syncRemote;
     }
 
-    public void setSyncRemote(String syncRemote) {
+    public void setSyncRemote(boolean syncRemote) {
         this.syncRemote = syncRemote;
     }
 

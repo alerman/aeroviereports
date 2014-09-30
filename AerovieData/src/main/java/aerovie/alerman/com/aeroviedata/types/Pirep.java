@@ -1,14 +1,18 @@
 package aerovie.alerman.com.aeroviedata.types;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.SerializedName;
-import com.orm.SugarRecord;
 
 import java.util.Date;
 
 /**
  * Created by alerman on 9/16/14.
  */
-public class Pirep extends SugarRecord<Pirep> {
+
+@Table(name = "pirep")
+public class Pirep extends Model {
     //        "CREATE TABLE IF NOT EXISTS `pirep` (`pirep_id` integer primary key autoincrement,
     // `timestamp` timestamp not null default current_timestamp,
     // `user_id` integer NOT NULL DEFAULT '0',
@@ -51,67 +55,106 @@ public class Pirep extends SugarRecord<Pirep> {
 //        "ALTER TABLE pirep ADD `icing_type` varchar(255) not null default ''"];
 //        "ALTER TABLE pirep ADD `ride_type` varchar(255) not null default ''"];
 
-
+    @Column(name="timestamp")
     private Date timestamp;
     @SerializedName("user_id")
+    @Column(name="user_id")
     private String userId;
+    @Column(name="name")
     private String name;
+    @Column(name="pirep_time")
     @SerializedName("pirep_time")
     private String pirepTimestamp;
+    @Column(name="my_lat")
     @SerializedName("my_lat")
     private String myLat;
+    @Column(name="my_long")
     @SerializedName("my_long")
     private String myLong;
+    @Column(name="altitude")
     private String altitude;
     @SerializedName("gps_lat")
+    @Column(name="gps_lat")
     private String gpsLat;
+    @Column(name="gps_long")
     @SerializedName("gps_long")
     private String gpsLong;
+    @Column(name="gps_altitude")
     @SerializedName("gps_altitude")
     private String gpsAltitude;
+    @Column(name="callsign")
     private String callsign;
+    @Column(name="comment")
     private String comment;
+    @Column(name="ride")
     private String ride;
+    @Column(name="ride_frequency")
     @SerializedName("ride_frequency")
     private String rideFrequency;
+    @Column(name="wx")
     private String wx;
+    @Column(name="is_clean")
     @SerializedName("is_clean")
     private String isClean;
+    @Column(name="is_noisy")
     @SerializedName("is_noisy")
     private String isNoisy;
+    @Column(name="is_smelly")
     @SerializedName("is_smelly")
     private String isSmelly;
+    @Column(name="photo")
     private String photo;
+    @Column(name="twitter")
     private String twitter;
+    @Column(name="facebook")
     private String facebook;
+    @Column(name="deleted")
     private String deleted;
+    @Column(name="remote_pirep_id", unique = true, onUniqueConflict = Column.ConflictAction.FAIL)
     @SerializedName("remote_pirep_id")
     private String remotePirepId;
+    @Column(name="sync_remote")
     @SerializedName("sync_remote")
-    private String syncRemote;
+    private boolean syncRemote;
+    @Column(name="ride_base")
     @SerializedName("ride_base")
     private String rideBase;
+    @Column(name="ride_top")
     @SerializedName("ride_top")
     private String rideTop;
+    @Column(name="visibility")
     private String visibility;
+    @Column(name="cloud")
     private String cloud;
+    @Column(name="cloud_base")
     @SerializedName("cloud_base")
     private String cloudBase;
+    @Column(name="cloud_top")
     @SerializedName("cloud_top")
     private String cloudTop;
+    @Column(name="icing")
     private String icing;
+    @Column(name="icing_base")
     @SerializedName("icing_base")
     private String icingBase;
+    @Column(name="icing_top")
     @SerializedName("icing_top")
     private String icingTop;
+    @Column(name="callsign_type")
     @SerializedName("callsign_type")
     private String callsignType;
+    @Column(name="oat")
     private String oat;
+    @Column(name="wind")
     private String wind;
+    @Column(name="icing_type")
     @SerializedName("icing_type")
     private String icingType;
+    @Column(name="rede_type")
     @SerializedName("ride_type")
     private String rideType;
+    @Column(name="llws")
+    private String llws;
 
     public Date getTimestamp() {
         return timestamp;
@@ -297,11 +340,11 @@ public class Pirep extends SugarRecord<Pirep> {
         this.remotePirepId = remotePirepId;
     }
 
-    public String getSyncRemote() {
+    public boolean getSyncRemote() {
         return syncRemote;
     }
 
-    public void setSyncRemote(String syncRemote) {
+    public void setSyncRemote(boolean syncRemote) {
         this.syncRemote = syncRemote;
     }
 
@@ -415,5 +458,13 @@ public class Pirep extends SugarRecord<Pirep> {
 
     public void setRideType(String rideType) {
         this.rideType = rideType;
+    }
+
+    public String getLlws() {
+        return llws;
+    }
+
+    public void setLlws(String llws) {
+        this.llws = llws;
     }
 }

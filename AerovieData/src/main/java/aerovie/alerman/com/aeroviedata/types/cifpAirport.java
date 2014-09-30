@@ -1,13 +1,16 @@
 package aerovie.alerman.com.aeroviedata.types;
 
-import com.orm.SugarRecord;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
 import java.util.Date;
 
 /**
  * Created by alerman on 9/16/14.
  */
-public class cifpAirport extends SugarRecord<cifpAirport> {
+@Table(name = "cifp_airport")
+public class cifpAirport extends Model {
     //        "CREATE TABLE IF NOT EXISTS cifp_airport (
     //          `cifp_airport_id` integer primary key autoincrement,
     //          `timestamp` not null default current_timestamp,
@@ -19,15 +22,22 @@ public class cifpAirport extends SugarRecord<cifpAirport> {
     //          `deleted` varchar(255) not null default 'no',
     //          `sync_remote` varchar(255) not null default 'no')"];
 
+    @Column(name = "remote_cifp_airport_id", unique = true, onUniqueConflict = Column.ConflictAction.FAIL)
     private String cifpAirportId;
+    @Column(name="timestamp")
     private Date timestamp;
+    @Column(name="ident")
     private String ident;
+    @Column(name="name")
     private String name;
+    @Column(name="my_lat")
     private String myLat;
+    @Column(name="my_log")
     private String myLong;
-    private String remoteCifpAirportId;
+    @Column(name="deleted")
     private String deleted;
-    private String syncRemote;
+    @Column(name="sync_remote")
+    private boolean syncRemote;
 
     public String getCifpAirportId() {
         return cifpAirportId;
@@ -77,14 +87,6 @@ public class cifpAirport extends SugarRecord<cifpAirport> {
         this.myLong = myLong;
     }
 
-    public String getRemoteCifpAirportId() {
-        return remoteCifpAirportId;
-    }
-
-    public void setRemoteCifpAirportId(String remoteCifpAirportId) {
-        this.remoteCifpAirportId = remoteCifpAirportId;
-    }
-
     public String getDeleted() {
         return deleted;
     }
@@ -93,11 +95,11 @@ public class cifpAirport extends SugarRecord<cifpAirport> {
         this.deleted = deleted;
     }
 
-    public String getSyncRemote() {
+    public boolean getSyncRemote() {
         return syncRemote;
     }
 
-    public void setSyncRemote(String syncRemote) {
+    public void setSyncRemote(boolean syncRemote) {
         this.syncRemote = syncRemote;
     }
 }

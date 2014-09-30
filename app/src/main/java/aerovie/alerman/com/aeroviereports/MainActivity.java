@@ -10,10 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.activeandroid.query.Select;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
+
+import aerovie.alerman.com.aeroviedata.types.Pirep;
 
 public class MainActivity extends FragmentActivity {
 
@@ -26,7 +31,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        List<Pirep> pireps = new Select().all().from(Pirep.class).<Pirep>execute();
         mImageView = (ImageView) findViewById(R.id.imageView);
         mImageView.setImageResource(R.drawable.topbar);
         mImageView.setScaleType(ImageView.ScaleType.FIT_XY);

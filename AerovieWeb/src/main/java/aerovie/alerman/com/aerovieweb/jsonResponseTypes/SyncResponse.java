@@ -13,6 +13,8 @@ public class SyncResponse {
     @SerializedName("device_sync_id")
     private String deviceSyncId;
 
+
+
     public AirlinePirepData getSyncRemoteData() {
         return syncRemoteData;
     }

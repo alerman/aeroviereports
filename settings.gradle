@@ -1,1 +1,1 @@
-include ':app', ':AerovieWeb', ':AerovieData'
+include ':app', ':AerovieWeb', ':AerovieData', ':ActiveAndroid-master'
