@@ -47,6 +47,16 @@ public class PirepListAdapter extends ArrayAdapter<Pirep> {
         super(context, resource, textViewResourceId, objects);
     }
 
+    private static PirepListAdapter instance;
+
+    public static ArrayAdapter<Pirep> getInstance(Context context, int resource, List<Pirep> objects){
+        if(instance!= null)
+        {
+            return instance;
+        }else
+            return new PirepListAdapter(context,resource,objects);
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -76,4 +86,5 @@ public class PirepListAdapter extends ArrayAdapter<Pirep> {
         return v;
 
     }
+
 }

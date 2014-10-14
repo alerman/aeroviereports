@@ -33,7 +33,6 @@ import common.SharedPreferencesManager;
 
 public class LoginActivity extends Activity {
 
-    public static PendingIntent dbSyncIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,21 +149,8 @@ public class LoginActivity extends Activity {
     }
 
     private void loginSuccess() {
-        Intent i = new Intent(getApplicationContext(), DBSyncReceiver.class);
 
-        dbSyncIntent = PendingIntent.getBroadcast(getApplicationContext(), Integer.valueOf((int) Math.floor(Math.random() * 100)), i, 0);
 
-        // We want the alarm to go off 3 seconds from now.
-        long firstTime = SystemClock.elapsedRealtime();
-        firstTime += 3 * 1000;//start 3 seconds after first register.
-
-//        Schedule the alarm!
-        AlarmManager am = (AlarmManager) getApplicationContext()
-                .getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
-                60*1000*1, dbSyncIntent);//1min interval
-
-//        String sessionId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.sessionId), null);
 //        String sessionId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.sessionId), null);
 //        String deviceSyncId = SharedPreferencesManager.retrieve(getApplicationContext(), getString(R.string.deviceId), null);
 //        try {

@@ -55,14 +55,14 @@ public class Pirep extends Model {
 //        "ALTER TABLE pirep ADD `icing_type` varchar(255) not null default ''"];
 //        "ALTER TABLE pirep ADD `ride_type` varchar(255) not null default ''"];
 
-    @Column(name="timestamp")
+    @Column(name="timestamp", notNull = false)
     private Date timestamp;
     @SerializedName("user_id")
     @Column(name="user_id")
     private String userId;
     @Column(name="name")
     private String name;
-    @Column(name="pirep_time")
+    @Column(name="pirep_time", notNull = false)
     @SerializedName("pirep_time")
     private String pirepTimestamp;
     @Column(name="my_lat")

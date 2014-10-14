@@ -155,9 +155,9 @@ public class WebRequestExecutor {
             pirep.save();
         }
 
-        new Delete().from(Airline.class).where("deleted = ", "yes").execute();
-        new Delete().from(Pirep.class).where("deleted = ", "yes").execute();
-        new Delete().from(cifpAirport.class).where("deleted = ", "yes").execute();
+        new Delete().from(Airline.class).where("deleted = ?", "yes").execute();
+        new Delete().from(Pirep.class).where("deleted = ?", "yes").execute();
+        new Delete().from(cifpAirport.class).where("deleted = ?", "yes").execute();
         ActiveAndroid.setTransactionSuccessful();
         }catch(NullPointerException e)
         {

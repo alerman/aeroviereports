@@ -27,7 +27,7 @@ public class Airline extends Model {
     @SerializedName("airline_id")
     @Column(name="remote_airline_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String airlineId;
-    @Column(name="timestamp")
+    @Column(name="timestamp", notNull = false)
     private Date timestamp;
     @Column(name="ident")
     private String ident;

@@ -24,7 +24,7 @@ public class cifpAirport extends Model {
 
     @Column(name = "remote_cifp_airport_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String cifpAirportId;
-    @Column(name="timestamp")
+    @Column(name="timestamp", notNull = false)
     private Date timestamp;
     @Column(name="ident")
     private String ident;
